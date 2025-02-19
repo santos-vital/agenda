@@ -1,4 +1,8 @@
-def adicionar_contato(contatos, nome, telefone, email):
+def adicionar_contato(contatos):
+  nome = input("Digite o nome do contato: ")
+  telefone = input("Digite o telefone do contato: ")
+  email = input("Digite o email do contato: ")
+
   contato = {
     "nome": nome, 
     "telefone": telefone, 
@@ -12,6 +16,10 @@ def adicionar_contato(contatos, nome, telefone, email):
   return
 
 def visualizar_contatos(contatos):
+  if not contatos:
+      print("📌 A lista de contatos está vazia.")
+      return
+
   print("\nLista de contatos")
   for indice, contato in enumerate(contatos, start=1):
     favorito = contato["favorito"]
@@ -22,6 +30,7 @@ def visualizar_contatos(contatos):
     print(f"   📞 Telefone: {telefone}")
     print(f"   📧 E-mail: {email}")
     print("-" * 30)
+  return
 
 def editar_contato(contatos):
   if not contatos:
@@ -46,6 +55,56 @@ def editar_contato(contatos):
       return
   print("⚠️ Contato não encontrado!")
 
+def marcar_desmarcar_favorito(contatos):
+  if not contatos:
+      print("📌 A lista de contatos está vazia.")
+      return
+
+  nome_busca = input("🔍 Digite o nome do contato que deseja marcar/desmarcar como favorito: ").strip()
+
+  for contato in contatos:
+      if contato["nome"].lower() == nome_busca.lower():
+          contato["favorito"] = not contato["favorito"]  # Alterna entre True e False
+          status = "⭐ Marcado como favorito!" if contato["favorito"] else "❌ Removido dos favoritos!"
+          print(f"{status} ({contato['nome']})\n")
+          return
+
+  print("⚠️ Contato não encontrado!")
+
+def visualizar_favoritos(contatos):
+  if not any(contato["favorito"] for contato in contatos):
+      print("📌 A lista de contatos favoritos está vazia.")
+      return
+  
+  print("\nLista de contatos favoritos")
+  for indice, contato in enumerate(contatos, start=1):
+    if contato["favorito"]:
+      favorito = contato["favorito"]
+      nome = contato["nome"]
+      telefone = contato["telefone"]
+      email = contato["email"]
+      print(f"{indice}. {'★' if favorito else '☆'} {nome}")
+      print(f"   📞 Telefone: {telefone}")
+      print(f"   📧 E-mail: {email}")
+      print("-" * 30)
+      return
+
+def deletar_contato(contatos):
+  if not contatos:
+      print("📌 A lista de contatos está vazia.")
+      return
+  
+  nome_busca = input("🔍 Digite o nome do contato que deseja deletar: ").strip()
+
+  for contato in contatos:
+    if contato["nome"].lower() == nome_busca.lower():
+      contatos.remove(contato)
+      print(f"Contato {contato["nome"]} deletado com sucesso!")
+      return
+
+  print("⚠️ Contato não encontrado!")
+    
+
 contatos = []
 
 while True:
@@ -61,15 +120,17 @@ while True:
   opcao = input("Selecione a operação desejada: ")
 
   if opcao == "1":
-    nome = input("Digite o nome do contato: ")
-    telefone = input("Digite o telefone do contato: ")
-    email = input("Digite o email do contato: ")
-
-    adicionar_contato(contatos, nome, telefone, email)
+    adicionar_contato(contatos)
   elif opcao == "2":
     visualizar_contatos(contatos)
   elif opcao == "3":
     editar_contato(contatos)
+  elif opcao == "4":
+    marcar_desmarcar_favorito(contatos)
+  elif opcao == "5":
+    visualizar_favoritos(contatos)
+  elif opcao == "6":
+    deletar_contato(contatos)
   elif opcao == "7":
     break
   else:
