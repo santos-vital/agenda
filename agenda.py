@@ -23,6 +23,29 @@ def visualizar_contatos(contatos):
     print(f"   📧 E-mail: {email}")
     print("-" * 30)
 
+def editar_contato(contatos):
+  if not contatos:
+    print("📌 A lista de contatos está vazia.")
+    return
+
+  nome_busca = input("🔍 Digite o nome do contato que deseja editar: ").strip()
+
+  for contato in contatos:
+    if contato["nome"].lower() == nome_busca.lower():
+      print(f"\n✏️ Editando contato: {contato['nome']}")
+            
+      novo_nome = input(f"Novo nome ({contato['nome']}): ").strip() or contato['nome']
+      novo_telefone = input(f"Novo telefone ({contato['telefone']}): ").strip() or contato['telefone']
+      novo_email = input(f"Novo e-mail ({contato['email']}): ").strip() or contato['email']
+
+      contato["nome"] = novo_nome
+      contato["telefone"] = novo_telefone
+      contato["email"] = novo_email
+
+      print("✅ Contato atualizado com sucesso!\n")
+      return
+  print("⚠️ Contato não encontrado!")
+
 contatos = []
 
 while True:
@@ -45,6 +68,8 @@ while True:
     adicionar_contato(contatos, nome, telefone, email)
   elif opcao == "2":
     visualizar_contatos(contatos)
+  elif opcao == "3":
+    editar_contato(contatos)
   elif opcao == "7":
     break
   else:
